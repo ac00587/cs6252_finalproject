@@ -11,28 +11,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark mb-5">
-        <a class="navbar-brand">P99 PL Service</a>
-        <button type="button" data-bs-toggle="collapse" data-bs-target="#naving" class="navbar-toggler" aria-controls="naving" aria-expanded="false" aria-label="Toggle nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="naving">
-           <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="elguapo.html">Elguapo</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="kupa.html">Kupa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="form.html">Form</a>
-                </li>
-           </ul>
-        </div>
-    </nav>
+    {{ include('/shared/nav.twig') }}
 
     <main class="flex-shrink-0  mt-5">
         <div class="container text-center">
@@ -71,16 +50,7 @@
         </div>
     </main>
 
-    <footer class="footer mt-auto py-2 bg-dark">
-        <div class="container">
-            <span class="text-muted">
-                Copyright &copy; 2022 Project 1999 Power Leveling Service<br>
-                <a href="mailto:firtlast@servicesite.com">firtlast@servicesite.com</a><br>
-                This site is a project and in no way a real service
-            </span>
-        </div>
-
-    </footer>
+    {{ include('/shared/footer.twig') }}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 </body>
