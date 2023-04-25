@@ -13,8 +13,6 @@ class Controller
         $loader = new Twig\Loader\FilesystemLoader('./view');
         $this->twig = new Twig\Environment($loader);
         $this->action = $this->getAction();
-        
-        $this->twig->addGlobal('session', $_SESSION);
     }
     
     /**
@@ -42,6 +40,15 @@ class Controller
                 break;
             case 'Home':
                 $this->processShowHomePage();
+                break;
+            case 'Show Elguapo':
+                $this->processShowElguapoPage();
+                break;
+            case 'Show Kupa':
+                $this->processShowKupaPage();
+                break;
+            case 'Form':
+                $this->processShowFormPage();
                 break;
             default:
                 $this->processShowHomePage();
@@ -91,6 +98,30 @@ class Controller
      */
     private function processShowHomePage() {
         $template = $this->twig->load('home.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * Shows the elguapo page
+     */
+    private function processShowElguapoPage() {
+        $template = $this->twig->load('elguapo.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * Shows the kupa page
+     */
+    private function processShowKupaPage() {
+        $template = $this->twig->load('kupa.twig');
+        echo $template->render();
+    }
+    
+    /**
+     * Shows the kupa page
+     */
+    private function processShowFormPage() {
+        $template = $this->twig->load('form.twig');
         echo $template->render();
     }
     
