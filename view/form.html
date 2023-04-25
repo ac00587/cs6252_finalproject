@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Project 1999 Power Leveling Service</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="P99 PL Service is the best leveling service in the game!">
+    <link href="form.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark mb-5">
+        <a class="navbar-brand">P99 PL Service</a>
+        <button type="button" data-bs-toggle="collapse" data-bs-target="#naving" class="navbar-toggler" aria-controls="naving" aria-expanded="false" aria-label="Toggle nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="naving">
+           <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="elguapo.html">Elguapo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="kupa.html">Kupa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="form.html">Form</a>
+                </li>
+           </ul>
+        </div>
+    </nav>
+    
+    <div class="container mt-5 pt-5 pb-5">
+        <div class="row">
+            <form>
+                <label for="charField">Character Name:</label>
+                <input type="text" id="charField" name="charField"><br>
+                <div class="error display-none" id="charFieldError">Enter a word greater than 3 letters.</div>
+                <label for="hours">Enter number of hours:</label>
+                <input type="number" id="hours" name="hours">
+                <div class="error display-none" id="hoursError">Enter a number greater than 0.</div>
+                <p>Please select your power leveler:</p>
+                <input type="radio" id="elguapo" name="pler" value="Elguapo" checked>
+                <label for="elguapo">Elguapo</label><br>
+                <input type="radio" id="kupa" name="pler" value="Kupa">
+                <label for="kupa">Kupa</label><br>
+                <input type="radio" id="both" name="pler" value="Both">
+                <label for="both">Both</label>
+                <div id="price">Calculate Cost</div><br>
+            </form>
+        </div>
+        <div class="row">
+                <h2 class="display-none" id="totalDisplay">Read: </h2>
+        </div>
+    </div>    
+
+    <footer class="footer mt-auto py-2 bg-dark">
+        <div class="container">
+            <span class="text-muted">
+                Copyright &copy; 2022 Project 1999 Power Leveling Service<br>
+                <a href="mailto:firtlast@servicesite.com">firtlast@servicesite.com</a><br>
+                This site is a project and in no way a real service
+            </span>
+        </div>
+
+    </footer>
+
+    <script src="validation.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+</body>
+
+</html>

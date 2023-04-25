@@ -1,0 +1,15 @@
+
+.display-none { display: none; }
+.error { color: red;}
+#price {
+    width: 25%;
+    font-size: 1em;
+    color: whitesmoke;
+    background-color: darkblue;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: center;
+}
