@@ -3,8 +3,8 @@
 .error { color: red;}
 
 form {
-    margin: 5em;
-    padding: 5em;
+    margin: 1em;
+    padding: 1em;
 }
 input[text], select {
     width: 15em;
@@ -19,3 +19,4 @@ label {
 br {
     clear: left;
 }
+

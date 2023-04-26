@@ -17,25 +17,33 @@
             <main>
                 <br>
                 <br>
-                <h2>Profile</h2>
+                <h2>Order Service</h2>
 
                 <p>
                 <form action="." method="post" id="login_form" class="aligned">
 
-                    <label>First Name:</label>
-                    <input type="text" class="text" name="first_name">
+                    <label>Username:</label>
+                    <input type="text" class="text" name="username">
+                    {{ error_username }}
+                    <br>
+
+                    <label>Character Name:</label>
+                    <input type="text" class="text" name="char_name">
+                    {{ error_password }}
                     <br>
                     
-                    <label>Last Name:</label>
-                    <input type="text" class="text" name="last_name">
+                    <label>Character Server:</label>
+                    <input type="text" class="text" name="char_server">
+                    {{ error_first_name }}
                     <br>
                     
-                    <label>Email:</label>
-                    <input type="text" class="text" name="email">
+                    <label>Power Leveler:</label>
+                    <input type="text" class="text" name="power_leveler">
+                    {{ error_last_name }}
                     <br>
 
                     <label>&nbsp;</label>
-                    <input type="submit" name="action" value="Update">
+                    <input type="submit" name="action" value="Order">
                 </form></p>
 
         </main>

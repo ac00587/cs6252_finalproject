@@ -1,10 +1,12 @@
 <?php
 require_once 'autoload.php';
+require_once './model/Database.php';
 
 class Controller
 {
     private $twig;
     private $action;
+    private $db;
     
     /**
      * Instantiates a new controller
@@ -12,7 +14,11 @@ class Controller
     public function __construct() {
         $loader = new Twig\Loader\FilesystemLoader('./view');
         $this->twig = new Twig\Environment($loader);
+        $this->setupConnection();
+        $this->connectToDatabase();
         $this->action = $this->getAction();
+        
+        $this->twig->addGlobal('session', $_SESSION);
     }
     
     /**
@@ -26,11 +32,11 @@ class Controller
             case 'Login':
                 $this->processLogin();
                 break;
-            case 'Show PL Service':
-                $this->processShowPLService();
+            case 'Show Order':
+                $this->processShowOrder();
                 break;
-            case 'PL Service':
-                $this->processPLService();
+            case 'Order':
+                $this->processOrder();
                 break;
             case 'Logout':
                 $this->processLogout();
@@ -85,17 +91,17 @@ class Controller
     /**
      * Shows the registration page
      */
-    private function processShowPLService() {
+    private function processShowOrder() {
         $error_username = '';
         $error_password = '';
-        $template = $this->twig->load('pl_service.twig');
+        $template = $this->twig->load('order.twig');
         echo $template->render(['error_username' => $error_username, 'error_password' => $error_password]);
     }
     
     /**
      * Registers the user as specified in the post array
      */
-    private function processPLService() {
+    private function processOrder() {
         
     }
     
@@ -183,5 +189,33 @@ class Controller
             }
         }
         return $action;
+    }
+    
+    /**
+     * Ensures a secure connection and start session
+     */
+    private function setupConnection() {
+        $https = filter_input(INPUT_SERVER, 'HTTPS');
+        if (!$https) {
+            $host = filter_input(INPUT_SERVER, 'HTTP_HOST');
+            $uri = filter_input(INPUT_SERVER, 'REQUEST_URI');
+            $url = 'https://' . $host . $uri;
+            header("Location: " . $url);
+            exit();
+        }
+        session_start();
+    }
+    
+    /**
+     * Connects to the database
+     */
+    private function connectToDatabase() {
+        $this->db = new Database();
+        if (!$this->db->isConnected()) {
+            $error_message = $this->db->getErrorMessage();
+            $template = $this->twig->load('database_error.twig');
+            echo $template->render(['error_message' => $error_message]);
+            exit();
+        }
     }
 }
