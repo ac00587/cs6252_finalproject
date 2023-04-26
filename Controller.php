@@ -35,8 +35,11 @@ class Controller
             case 'Logout':
                 $this->processLogout();
                 break;            
-            case 'Show Purchases':
-                $this->processShowTasks();
+            case 'Show Registration':
+                $this->processShowRegistration();
+                break;
+            case 'Show Profile':
+                $this->processShowProfile();
                 break;
             case 'Home':
                 $this->processShowHomePage();
@@ -49,6 +52,9 @@ class Controller
                 break;
             case 'Form':
                 $this->processShowFormPage();
+                break;
+            case 'Register':
+                $this->processRegistration();
                 break;
             default:
                 $this->processShowHomePage();
@@ -141,8 +147,26 @@ class Controller
      * Shows the tasks of the logged in user. If no user is logged in,
      * shows the login page
      */
-    private function processShowPurchases() {
-        
+    private function processShowRegistration() {
+        $template = $this->twig->load('registration.twig');
+        echo $template->render();        
+    }
+    
+    /**
+     * Shows the tasks of the logged in user. If no user is logged in,
+     * shows the login page
+     */
+    private function processRegistration() {
+              
+    }
+    
+    /**
+     * Shows the tasks of the logged in user. If no user is logged in,
+     * shows the login page
+     */
+    private function processShowProfile() {
+        $template = $this->twig->load('profile.twig');
+        echo $template->render();        
     }
     
     /**
