@@ -62,6 +62,9 @@ class Controller
             case 'Register':
                 $this->processRegistration();
                 break;
+            case 'Update':
+                $this->processUpdate();
+                break;
             default:
                 $this->processShowHomePage();
                 break;
@@ -85,7 +88,30 @@ class Controller
      * Logs in the user with the credentials specified in the post array
      */
     private function processLogin() {
+        $username = filter_input(INPUT_POST, 'username');
+        $password = filter_input(INPUT_POST, 'password');
+        if ($this->db->isValidUserLogin($username, $password)) {
+            $_SESSION['is_valid_user'] = true;
+            $_SESSION['username'] = $username;
+            header("Location: .?action=Show Profile");
+        } else {
+            $login_message = 'Invalid username or password';
+            $template = $this->twig->load('login.twig');
+            echo $template->render(['login_message' => $login_message]);
+        }
+    }
+    
+    /**
+     * Update
+     */
+    private function processUpdate() {
+        $first_name = filter_input(INPUT_POST, 'first_name');
+        $last_name = filter_input(INPUT_POST, 'last_name');
+        $email = filter_input(INPUT_POST, 'email');
+        $user_name = $_SESSION['username'];
         
+        $this->db->updateInfo($user_name, $first_name, $last_name, $email);
+        header("Location: .?action=Show Profile");
     }
     
     /**
@@ -145,8 +171,7 @@ class Controller
         $_SESSION = array();
         session_destroy();
         $login_message = 'You have been logged out.';
-        $template = $this->twig->load('login.twig');
-        echo $template->render(['login_message' => $login_message]);
+        header("Location: .?action=Show Login");
     }
     
     /**
@@ -171,8 +196,9 @@ class Controller
      * shows the login page
      */
     private function processShowProfile() {
+        $info = $this->db->getInfoForUser($_SESSION['username']);
         $template = $this->twig->load('profile.twig');
-        echo $template->render();        
+        echo $template->render(['info' => $info]);     
     }
     
     /**
