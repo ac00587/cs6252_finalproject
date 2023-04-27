@@ -23,7 +23,7 @@
                 <form action="." method="post" id="login_form" class="aligned">
 
                     <label>Username:</label>
-                    <input type="text" class="text" name="username">
+                    <input type="text" class="text" name="username" value="{{ session.username }}">
                     {{ error_username }}
                     <br>
 
@@ -32,19 +32,40 @@
                     {{ error_password }}
                     <br>
                     
-                    <label>Character Server:</label>
-                    <input type="text" class="text" name="char_server">
-                    {{ error_first_name }}
+                    <label for="char_server">Character Server:</label>
+                    <select id="char_server" name="char_server">
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                    </select>
+                    {{ error_char_server }}
                     <br>
                     
-                    <label>Power Leveler:</label>
-                    <input type="text" class="text" name="power_leveler">
-                    {{ error_last_name }}
+                    <label for="pl_leveler">Power Leveler:</label>
+                    <select id="pl_leveler" name="pl_leveler">
+                        <option value="Elguapo">Elguapo</option>
+                        <option value="Kupa">Kupa</option>
+                        <option value="Both">Both</option>
+                    </select>
+                    {{ error_pl_leveler }}
+                    <br>
+                    
+                    <label>Hours:</label>
+                    <input type="text" class="text" name="hours">
+                    {{ error_hours }}
                     <br>
 
                     <label>&nbsp;</label>
                     <input type="submit" name="action" value="Order">
-                </form></p>
+                </form>
+            </p>
+            
+            {% if session.username is empty %}
+                <h3>You must login before order is completed!</h3>
+            {% endif %}
+            {% if cost > 0 %}
+                <h3>Your total cost for the power leveling session is {{ cost }} platinum pieces!</h3>
+            {% endif %}
 
         </main>
         {{ include('/shared/footer.twig') }}

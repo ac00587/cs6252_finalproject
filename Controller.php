@@ -118,17 +118,32 @@ class Controller
      * Shows the registration page
      */
     private function processShowOrder() {
+        $cost = 0;
         $error_username = '';
         $error_password = '';
         $template = $this->twig->load('order.twig');
-        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password]);
+        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'cost' => $cost]);
     }
     
     /**
      * Registers the user as specified in the post array
      */
     private function processOrder() {
+        $error_username = '';
+        $error_password = '';
+        $char_name = filter_input(INPUT_POST, 'char_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $char_server = filter_input(INPUT_POST, 'char_server');
+        $pl_leveler = filter_input(INPUT_POST, 'pl_leveler');
+        $hours = filter_input(INPUT_POST, 'hours', FILTER_SANITIZE_NUMBER_INT);
+        $multiplier = 1000;
         
+        if($pl_leveler == "Both") {
+            $multiplier = 1500;
+        }
+        $cost = $hours * $multiplier;
+        $this->db->addOrder($_SESSION['username'], $char_name, $char_server, $pl_leveler, $cost);
+        $template = $this->twig->load('order.twig');
+        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'cost' => $cost]);
     }
     
     /**
@@ -188,7 +203,17 @@ class Controller
      * shows the login page
      */
     private function processRegistration() {
-              
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+        $password = filter_input(INPUT_POST, 'password');
+        $first_name = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $last_name = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        
+        $this->db->addUser($username, $password);
+        $this->db->addUserInfo($username, $first_name, $last_name, $email);
+        
+        $template = $this->twig->load('registration.twig');
+        echo $template->render();
     }
     
     /**

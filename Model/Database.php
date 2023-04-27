@@ -60,12 +60,12 @@ class Database {
     }
     
     /**
-     * Retrieves the userinfo for the specified user
+     * Update info for specified user
      * 
+     * @param string $user_name 
      * @param string $first_name
      * @param string $last_name
      * @param string $email
-     * @return array - array of tasks for the specified username
      */
     public function updateInfo($user_name, $first_name, $last_name, $email) {
         $query = 'UPDATE userinfo
@@ -79,6 +79,72 @@ class Database {
         $statement->execute();
         $statement->closeCursor();
     }
+    
+    /**
+     * Adds an order for the specified user
+     * 
+     * @param string $user_name
+     * @param string $char_name
+     * @param string $char_server
+     * @param string $power_leveler 
+     * @param int $cost
+     */
+    public function addOrder($user_name, $char_name, $char_server, $power_leveler, $cost) {
+        
+        $query = 'INSERT INTO orders
+                    (orderID, userName, dateOrdered, charName, charServer, powerLeveler, cost)
+                 VALUES
+                    (DEFAULT, :userName, NOW(), :charName, :charServer, :powerLeveler, :cost)';
+        $statement = $this->db->prepare($query);
+        $statement->bindValue(':charName', $char_name);
+        $statement->bindValue(':charServer', $char_server);
+        $statement->bindValue(':cost', $cost);
+        $statement->bindValue(':userName', $user_name);
+        $statement->bindValue(':powerLeveler', $power_leveler);
+        $statement->execute();
+        $statement->closeCursor();
+    }   
+    
+    /**
+     * Adds a new user
+     * 
+     * @param string $user_name     *  
+     * @param string $password
+     */
+    public function addUser($user_name, $password) {
+        $new_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        $query = 'INSERT INTO users
+                    (userID, userName, password)
+                 VALUES
+                    (DEFAULT, :userName, :password)';
+        $statement = $this->db->prepare($query);
+        $statement->bindValue(':userName', $user_name);
+        $statement->bindValue(':password', $new_password);
+        $statement->execute();
+        $statement->closeCursor();
+    }   
+    
+    /**
+     * Adds a new user
+     * 
+     * @param string $user_name     *  
+     * @param string $password
+     */
+    public function addUserInfo($username, $first_name, $last_name, $email) {
+        
+        $query = 'INSERT INTO userinfo
+                    (userName, firstName, lastName, email)
+                 VALUES
+                    (:userName, :firstName, :lastName, :email)';
+        $statement = $this->db->prepare($query);
+        $statement->bindValue(':userName', $username);
+        $statement->bindValue(':firstName', $first_name);
+        $statement->bindValue(':lastName', $last_name);
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        $statement->closeCursor();
+    }   
         
     /**
      * Checks the connection to the database
