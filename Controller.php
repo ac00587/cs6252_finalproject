@@ -1,12 +1,14 @@
 <?php
 require_once 'autoload.php';
 require_once './model/Database.php';
+require_once './model/Validator.php';
 
 class Controller
 {
     private $twig;
     private $action;
     private $db;
+    private $validator;
     
     /**
      * Instantiates a new controller
@@ -17,6 +19,7 @@ class Controller
         $this->setupConnection();
         $this->connectToDatabase();
         $this->action = $this->getAction();
+        $this->validator = new Validator();
         
         $this->twig->addGlobal('session', $_SESSION);
     }
@@ -105,13 +108,39 @@ class Controller
      * Update
      */
     private function processUpdate() {
+        $error = false;
+        $error_first_name = '';
+        $error_last_name = '';
+        $error_email = '';
         $first_name = filter_input(INPUT_POST, 'first_name');
         $last_name = filter_input(INPUT_POST, 'last_name');
         $email = filter_input(INPUT_POST, 'email');
         $user_name = $_SESSION['username'];
         
-        $this->db->updateInfo($user_name, $first_name, $last_name, $email);
-        header("Location: .?action=Show Profile");
+        $validateFirstName = $this->validator->validateFirstName($first_name);
+        $validateLastName = $this->validator->validateLastName($last_name);
+        $validateEmail = $this->validator->validateEmail($email);        
+        
+        if(strlen($validateFirstName) > 0) {
+            $error = true;
+            $error_first_name = $validateFirstName;
+        }
+        if(strlen($validateLastName) > 0) {
+            $error = true;
+            $error_last_name = $validateLastName;
+        }
+        if(strlen($validateEmail) > 0) {
+            $error = true;
+            $error_email = $validateEmail;
+        }
+        
+        if(!$error) {
+            $this->db->updateInfo($user_name, $first_name, $last_name, $email);
+            header("Location: .?action=Show Profile");
+        }
+        
+        $template = $this->twig->load('profile.twig');
+        echo $template->render(['error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email]);
     }
     
     /**
@@ -129,21 +158,44 @@ class Controller
      * Registers the user as specified in the post array
      */
     private function processOrder() {
-        $error_username = '';
-        $error_password = '';
+        $error = false;
+        $error_char_name = '';
+        $error_hours = '';
+        $logged_in = '';
         $char_name = filter_input(INPUT_POST, 'char_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $char_server = filter_input(INPUT_POST, 'char_server');
         $pl_leveler = filter_input(INPUT_POST, 'pl_leveler');
         $hours = filter_input(INPUT_POST, 'hours', FILTER_SANITIZE_NUMBER_INT);
         $multiplier = 1000;
         
+        $validateCharName = $this->validator->validateCharName($char_name);
+        
+        if(strlen($validateCharName) > 0) {
+            $error = true;
+            $error_char_name = $validateCharName;
+        }
+        
+        if(!is_int($hours) || $hours < 1) {
+            $error = true;
+            $error_hours = 'Must be an integer greater than 0';
+        }
+        
+        if(!isset($_SESSION['is_valid_user'])) {
+            $error = true;
+            
+        }
+        
         if($pl_leveler == "Both") {
             $multiplier = 1500;
         }
         $cost = $hours * $multiplier;
-        $this->db->addOrder($_SESSION['username'], $char_name, $char_server, $pl_leveler, $cost);
+        
+        if(!$error) {
+            $this->db->addOrder($_SESSION['username'], $char_name, $char_server, $pl_leveler, $cost);
+        }
+        
         $template = $this->twig->load('order.twig');
-        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'cost' => $cost]);
+        echo $template->render(['error_char_name' => $error_char_name, 'error_hours' => $error_hours, 'cost' => $cost]);
     }
     
     /**
@@ -203,17 +255,52 @@ class Controller
      * shows the login page
      */
     private function processRegistration() {
+        $error = false;
+        $error_username = '';
+        $error_password = '';
+        $error_first_name = '';
+        $error_last_name = '';
+        $error_email = '';
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
         $password = filter_input(INPUT_POST, 'password');
         $first_name = filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $last_name = filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         
-        $this->db->addUser($username, $password);
-        $this->db->addUserInfo($username, $first_name, $last_name, $email);
+        $validateUserName = $this->validator->validateUserName($username);
+        $validatePassword = $this->validator->validatePassword($password);
+        $validateFirstName = $this->validator->validateFirstName($first_name);
+        $validateLastName = $this->validator->validateLastName($last_name);
+        $validateEmail = $this->validator->validateEmail($email);
+        
+        if(strlen($validateUserName) > 0) {
+            $error = true;
+            $error_username = $validateUserName;
+        }
+        if(strlen($validatePassword) > 0) {
+            $error = true;
+            $error_password = $validatePassword;
+        }
+        if(strlen($validateFirstName) > 0) {
+            $error = true;
+            $error_first_name = $validateFirstName;
+        }
+        if(strlen($validateLastName) > 0) {
+            $error = true;
+            $error_last_name = $validateLastName;
+        }
+        if(strlen($validateEmail) > 0) {
+            $error = true;
+            $error_email = $validateEmail;
+        }
+        
+        if(!$error) {
+            $this->db->addUser($username, $password);
+            $this->db->addUserInfo($username, $first_name, $last_name, $email);
+        }
         
         $template = $this->twig->load('registration.twig');
-        echo $template->render();
+        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email]);
     }
     
     /**

@@ -23,13 +23,12 @@
                 <form action="." method="post" id="login_form" class="aligned">
 
                     <label>Username:</label>
-                    <input type="text" class="text" name="username" value="{{ session.username }}">
-                    {{ error_username }}
+                    <input type="text" class="text" name="username" value="{{ session.username }}" readonly>
                     <br>
 
                     <label>Character Name:</label>
                     <input type="text" class="text" name="char_name">
-                    {{ error_password }}
+                    {{ error_char_name }}
                     <br>
                     
                     <label for="char_server">Character Server:</label>
@@ -38,7 +37,6 @@
                         <option value="Green">Green</option>
                         <option value="Red">Red</option>
                     </select>
-                    {{ error_char_server }}
                     <br>
                     
                     <label for="pl_leveler">Power Leveler:</label>
@@ -47,7 +45,6 @@
                         <option value="Kupa">Kupa</option>
                         <option value="Both">Both</option>
                     </select>
-                    {{ error_pl_leveler }}
                     <br>
                     
                     <label>Hours:</label>

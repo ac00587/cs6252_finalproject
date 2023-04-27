@@ -24,14 +24,17 @@
 
                     <label>First Name:</label>
                     <input type="text" class="text" name="first_name" value="{{ info.firstName }}">
+                    {{ error_first_name }}
                     <br>
                     
                     <label>Last Name:</label>
                     <input type="text" class="text" name="last_name" value="{{ info.lastName }}">
+                    {{ error_last_name }}
                     <br>
                     
                     <label>Email:</label>
                     <input type="text" class="text" name="email"  value="{{ info.email }}">
+                    {{ error_email }}
                     <br>
 
                     <label>&nbsp;</label>
