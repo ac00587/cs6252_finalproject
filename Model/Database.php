@@ -145,6 +145,48 @@ class Database {
         $statement->execute();
         $statement->closeCursor();
     }   
+    
+    /**
+     * Retrieves all orders from user
+     * @param type $username
+     * @return type array
+     */
+    public function getOrders($username) {
+        $query = 'SELECT * FROM orders
+                  WHERE username = :username';
+        $statement = $this->db->prepare($query);
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+        $tasks = $statement->fetchAll();
+        $statement->closeCursor();
+        return $tasks;
+    }
+    
+    /**
+     * Retrieves power levelers
+     * @return array
+     */
+    public function getLevelers() {
+        $query = 'SELECT * FROM pler';
+        $statement = $this->db->prepare($query);
+        $statement->execute();
+        $pl = $statement->fetchAll();
+        $statement->closeCursor();
+        return $pl;
+    }
+    
+    /**
+     * Retrieves server names
+     * @return array
+     */
+    public function getLoc() {
+        $query = 'SELECT * FROM loc';
+        $statement = $this->db->prepare($query);
+        $statement->execute();
+        $locations = $statement->fetchAll();
+        $statement->closeCursor();
+        return $locations;
+    }
         
     /**
      * Checks the connection to the database

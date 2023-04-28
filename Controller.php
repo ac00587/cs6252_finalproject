@@ -35,6 +35,9 @@ class Controller
             case 'Login':
                 $this->processLogin();
                 break;
+            case 'Show Previous':
+                $this->processShowPrevious();
+                break;
             case 'Show Order':
                 $this->processShowOrder();
                 break;
@@ -105,6 +108,15 @@ class Controller
     }
     
     /**
+     * Shows the previous orders
+     */
+    private function processShowPrevious() {
+        $orders = $this->db->getOrders($_SESSION['username']);   
+        $template = $this->twig->load('view_orders.twig');
+        echo $template->render(['orders' => $orders]);
+    }
+    
+    /**
      * Update
      */
     private function processUpdate() {
@@ -139,8 +151,9 @@ class Controller
             header("Location: .?action=Show Profile");
         }
         
+        $info = $this->db->getInfoForUser($_SESSION['username']);
         $template = $this->twig->load('profile.twig');
-        echo $template->render(['error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email]);
+        echo $template->render(['error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email, 'info' => $info]);
     }
     
     /**
@@ -150,8 +163,10 @@ class Controller
         $cost = 0;
         $error_username = '';
         $error_password = '';
+        $levelers = $this->db->getLevelers();
+        $servers = $this->db->getLoc();
         $template = $this->twig->load('order.twig');
-        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'cost' => $cost]);
+        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'cost' => $cost, 'levelers' => $levelers, 'servers' => $servers]);
     }
     
     /**
@@ -165,7 +180,8 @@ class Controller
         $char_name = filter_input(INPUT_POST, 'char_name', FILTER_SANITIZE_SPECIAL_CHARS);
         $char_server = filter_input(INPUT_POST, 'char_server');
         $pl_leveler = filter_input(INPUT_POST, 'pl_leveler');
-        $hours = filter_input(INPUT_POST, 'hours', FILTER_SANITIZE_NUMBER_INT);
+        $hours = filter_input(INPUT_POST, 'hours');
+        $hours = (int)$hours;
         $multiplier = 1000;
         
         $validateCharName = $this->validator->validateCharName($char_name);
@@ -177,7 +193,7 @@ class Controller
         
         if(!is_int($hours) || $hours < 1) {
             $error = true;
-            $error_hours = 'Must be an integer greater than 0';
+            $error_hours = 'Must be an integer greater than 0.';
         }
         
         if(!isset($_SESSION['is_valid_user'])) {
@@ -194,8 +210,10 @@ class Controller
             $this->db->addOrder($_SESSION['username'], $char_name, $char_server, $pl_leveler, $cost);
         }
         
+        $levelers = $this->db->getLevelers();
+        $servers = $this->db->getLoc();
         $template = $this->twig->load('order.twig');
-        echo $template->render(['error_char_name' => $error_char_name, 'error_hours' => $error_hours, 'cost' => $cost]);
+        echo $template->render(['error_char_name' => $error_char_name, 'error_hours' => $error_hours, 'cost' => $cost, 'levelers' => $levelers, 'servers' => $servers]);
     }
     
     /**

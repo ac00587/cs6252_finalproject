@@ -33,17 +33,17 @@
                     
                     <label for="char_server">Character Server:</label>
                     <select id="char_server" name="char_server">
-                        <option value="Blue">Blue</option>
-                        <option value="Green">Green</option>
-                        <option value="Red">Red</option>
+                        {% for ele in servers %}
+                            <option value="{{ ele.serverLoc }}">{{ ele.serverLoc }}</option>
+                        {% endfor %}
                     </select>
                     <br>
                     
                     <label for="pl_leveler">Power Leveler:</label>
                     <select id="pl_leveler" name="pl_leveler">
-                        <option value="Elguapo">Elguapo</option>
-                        <option value="Kupa">Kupa</option>
-                        <option value="Both">Both</option>
+                        {% for ele in levelers %}
+                            <option value="{{ ele.leveler }}">{{ ele.leveler }}</option>
+                        {% endfor %}
                     </select>
                     <br>
                     
