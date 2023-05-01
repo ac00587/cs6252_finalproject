@@ -315,11 +315,16 @@ class Controller
         if(!$error) {
             $this->db->addUser($username, $password);
             $this->db->addUserInfo($username, $first_name, $last_name, $email);
+            $template = $this->twig->load('login.twig');
+            echo $template->render();
+
+        } else {
+            $template = $this->twig->load('registration.twig');
+            echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email]);
+
         }
         
-        $template = $this->twig->load('registration.twig');
-        echo $template->render(['error_username' => $error_username, 'error_password' => $error_password, 'error_first_name' => $error_first_name, 'error_last_name' => $error_last_name, 'error_email' => $error_email]);
-    }
+     }
     
     /**
      * Shows the tasks of the logged in user. If no user is logged in,
